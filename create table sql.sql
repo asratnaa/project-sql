@@ -1,102 +1,54 @@
-create table trial.data_buku (
-id_buku varchar (200) primary key not null,
-judul_buku varchar (200) not null,
-nama_penulis varchar (200) null,
-jumlah integer  null
+CREATE DATABASE kenangan_toko;
+USE kenangan_toko;
+
+
+--- tabel untuk menyimpan informasi pelanggan
+create table customers(
+customer_id INT AUTO_INCREMENT PRIMARY KEY,
+customer_name varchar(100),
+city varchar(100)
 );
 
-alter table trial.data_buku add lokasi varchar (200);
-alter table trial.data_buku drop column_lokasi;
-explain trial.data_buku;
-select * from trial.data_buku;
-
-create table trial.data_peminjaman (
-no_peminjaman varchar (200) not null,
-nama_peminjam varchar (200) primary key not null,
-id_buku varchar (200)  not null,
-jumlah_buku integer null,
-tgl_pinjam date not null,
-tgl_ekspetasi_kembali date not null,
-tgl_aktual_kembali date null,
-foreign key (id_buku) references trial.data_buku (id_buku)
+-- Tabel untuk menyimpan informasi produk
+create table products(
+product_id int AUTO_INCREMENT primary key,
+product_name varchar(100),
+price decimal(10,2)
 );
 
-explain trial.data_peminjaman;
+-- Tabel untuk menyimpan informasi penjualan
 
-drop table trial.data_peminjaman;
+CREATE TABLE sales (
+    sale_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    customer_id INT,
+    quantity INT,
+    sale_date DATE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
 
-drop table trial.data_buku;
+-- Masukkan data ke tabel customers
+INSERT INTO customers (customer_name, city) VALUES
+('Alice', 'New York'),
+('Bob', 'Los Angeles'),
+('Charlie', 'Chicago'),
+('Robert','Chicago'),
+('keira','New York'),
+('Xavier','New York');
 
-INSERT INTO
-    trial.data_buku (
-        id_buku,
-        lokasi,
-        judul_buku,
-        nama_penulis,
-        jumlah
-    )
-VALUES
-    (
-        '1234133',
-        '2U91',
-        'Membuat Strategi Bisnis',
-        'Dewey Deckers',
-        2
-    ),
-    (
-        '1390022',
-        '1A12',
-        'Anatomi Tubuh for Kids',
-        'Syafina',
-        3
-    ),
-    (
-        '1773364',
-        '1A29',
-        'Sentiment Analysis for Dummies 2nd Edition',
-        'Regina Alwi, Humaira',
-        2
-    );
-    
-    select * from trial.data_buku;
-    
-    INSERT INTO
-    trial.data_peminjaman (
-        no_peminjaman,
-        nama_peminjam,
-        id_buku,
-        jumlah_buku,
-        tgl_pinjam,
-        tgl_ekspetasi_kembali,
-        tgl_aktual_kembali
-    )
-VALUES
-    (
-        'A0000000001',
-        'Adi',
-        '1234133',
-        1,
-        '2022-10-10',
-        '2022-10-17',
-        NULL
-    ),
-    (
-        'A0000000002',
-        'Firman',
-        '1234133',
-        1,
-        '2022-10-12',
-        '2022-10-19',
-        NULL
-    ),
-    (
-        'A0000000003',
-        'Tina',
-        '1773364',
-        1,
-        '2022-10-09',
-        '2022-10-16',
-        '2022-10-12'
-    );
-    
-    select * from trial.data_peminjaman;
+
+-- Masukkan data ke tabel products
+INSERT INTO products (product_name, price) VALUES
+('Product A', 10.00),
+('Product B', 15.00),
+('Product C', 20.00),
+('Product D ', 20.00);
+
+-- Masukkan data ke tabel sales
+INSERT INTO sales (product_id, customer_id, quantity, sale_date) VALUES
+(1, 1, 2, '2024-01-01'),
+(2, 2, 1, '2024-01-02'),
+(3, 3, 5, '2024-01-03'),
+(1, 3, 3, '2024-01-03'),
+(2, 1, 4, '2024-01-04');
